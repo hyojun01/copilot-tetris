@@ -32,6 +32,7 @@ struct termios orig_termios;
 
 void reset_terminal_mode() {
     tcsetattr(0, TCSANOW, &orig_termios);
+    printf("\033[2J\033[%d;0H\033[?25h\033[0m\n", BOARD_HEIGHT + 3);
 }
 
 void set_conio_terminal_mode() {
@@ -195,6 +196,7 @@ void gameLoop() {
                 clearLines();
                 initBlock();
                 if (!canMove(currentBlock, 0, 0)) {
+                    printf("\033[H\033[J");
                     printf("Game Over\n");
                     break;
                 }
@@ -202,6 +204,7 @@ void gameLoop() {
         }
     }
     reset_terminal_mode();
+    printf("게임이 종료되었습니다. 터미널이 정상으로 복구되었습니다.\n");
 }
 
 int main() {
